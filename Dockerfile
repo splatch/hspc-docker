@@ -6,7 +6,7 @@ MAINTAINER Salvador Rodriguez <salvador.rodriguez@utah.edu>
 # Install packages
 ENV REFRESHED_AT 2016-03-15
 RUN apt-get update && \
-    apt-get install -yq --no-install-recommends mysql-server-5.6 maven wget unzip software-properties-common pwgen ca-certificates && \
+    apt-get install -yq --no-install-recommends mysql-server-5.6 wget unzip software-properties-common pwgen ca-certificates && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
@@ -26,9 +26,6 @@ RUN \
 ENV JAVA_HOME /usr/lib/jvm/java-7-oracle
 RUN echo PATH=$JAVA_HOME/bin:$PATH:$HOME/bin >> ~/.bashrc
 RUN echo export PATH JAVA_HOME >> ~/.bashrc
-
-# Set maven home
-RUN echo export M2_HOME=/usr/share/maven >> ~/.bashrc
 
 # MySQL scripts 
 # reference auth

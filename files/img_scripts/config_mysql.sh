@@ -25,13 +25,6 @@ mysql -uroot -pmysqlPassword -e "FLUSH PRIVILEGES"
 
 mysql -uroot -pmysqlPassword -e "source install-complete-ioc.sql"
 
-#mysql -uroot -pmysqlPassword -e "CREATE DATABASE fhir_ut"
-#mysql -uroot -pmysqlPassword -e "CREATE USER 'fhir_ut'@'localhost' IDENTIFIED BY 'fhir_ut'"
-#mysql -uroot -pmysqlPassword -e "GRANT ALL PRIVILEGES ON fhir_ut.* TO 'fhir_ut'@'%'"
-#mysql -uroot -pmysqlPassword -e "GRANT ALL PRIVILEGES ON fhir_ut.* TO 'fhir_ut'@'localhost'"
-#mysql -uroot -pmysqlPassword -e "FLUSH PRIVILEGES"	
-
-#mysql -uroot -pmysqlPassword -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'localhost' IDENTIFIED BY 'root' WITH GRANT OPTION"
 killall mysqld
 sleep 10
 }

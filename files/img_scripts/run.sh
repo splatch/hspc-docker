@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# run ssh 
-/usr/sbin/sshd
-
 # run mysql
 /etc/init.d/mysql start
 
