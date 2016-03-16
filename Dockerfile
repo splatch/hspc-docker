@@ -114,7 +114,6 @@ COPY files/img_scripts/run.sh /usr/local/bin/run.sh
 RUN chmod +x /usr/local/bin/run.sh
 
 EXPOSE 8080
-EXPOSE 22
 
 CMD ["/usr/local/bin/run.sh"]
 
