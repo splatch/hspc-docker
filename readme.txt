@@ -1,5 +1,5 @@
 
-In order to build this image, you must include the following files in the same folder were dockerfile is located:
+In order to build this image, you must include the following files in the files folder:
 
 - hsp-api.war
 - hsp-auth.war
@@ -7,6 +7,7 @@ In order to build this image, you must include the following files in the same f
 
 Build image :
 sudo docker build -t="opencds/hspc:ubuntu" .
+sudo docker build -t="hspc" .
 
 Create container :
 sudo docker run -d -p 8080:8080 -p 2222:22 --name hspc opencds/hspc:ubuntu

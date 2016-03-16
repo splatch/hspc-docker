@@ -1,23 +1,14 @@
-# Version: 0.0.1
+# Version: 0.0.2
 
 FROM ubuntu:14.04
 MAINTAINER Salvador Rodriguez <salvador.rodriguez@utah.edu>
 
 # Install packages
-ENV REFRESHED_AT 2015-08-14
+ENV REFRESHED_AT 2016-03-15
 RUN apt-get update && \
     apt-get install -yq --no-install-recommends mysql-server-5.6 maven wget unzip software-properties-common pwgen ca-certificates && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
-
-# ssh 
-RUN apt-get update && apt-get install -y openssh-server
-RUN mkdir /var/run/sshd
-RUN echo 'root:screencast' | chpasswd
-RUN sed -i 's/PermitRootLogin without-password/PermitRootLogin yes/' /etc/ssh/sshd_config
-
-# SSH login fix. Otherwise user is kicked off after login
-RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd
 
 ENV NOTVISIBLE "in users profile"
 RUN echo "export VISIBLE=now" >> /etc/profile
@@ -39,17 +30,53 @@ RUN echo export PATH JAVA_HOME >> ~/.bashrc
 # Set maven home
 RUN echo export M2_HOME=/usr/share/maven >> ~/.bashrc
 
-# Install MySQL
-ADD mysql_auth_install.sql /mysql_auth_install.sql
-ADD mysql_clients.sql /mysql_clients.sql
-ADD mysql_database_tables.sql /mysql_database_tables.sql
-ADD mysql_system_scopes.sql /mysql_system_scopes.sql
-ADD mysql_users.sql /mysql_users.sql
-ADD config_mysql.sh /config_mysql.sh
+# MySQL scripts 
+# reference auth
+COPY files/mysql/reference-auth/mysql_database_tables.sql /
+COPY files/mysql/reference-auth/mysql_users.sql /
+COPY files/mysql/reference-auth/mysql_system_scopes.sql /
+COPY files/mysql/reference-auth/mysql_clients.sql /
+ 
+# reference-api-mysql
+COPY files/mysql/reference-api-mysql/resource-server-client.sql /
+
+# reference-messaging
+COPY files/mysql/reference-messaging/messaging-client.sql /
+
+# reference apps
+COPY files/mysql/reference-apps/bp-centiles-client.sql /
+COPY files/mysql/reference-apps/cartiac-risk-client.sql /
+COPY files/mysql/reference-apps/diabetes-monograph-client.sql /
+COPY files/mysql/reference-apps/disease-monograph-client.sql /
+COPY files/mysql/reference-apps/fhir-demo-client.sql /
+COPY files/mysql/reference-apps/fhir-starter-client.sql /
+COPY files/mysql/reference-apps/pediatric-growth-chart-client.sql /
+COPY files/mysql/reference-apps/duke-pillbox-client.sql /
+COPY files/mysql/reference-apps/clindat-client.sql /
+COPY files/mysql/reference-apps/meducation-client.sql /
+
+# bilirubin-chart
+COPY files/mysql/bilirubin-chart/bilirubin-chart-client.sql /
+
+# appointments
+COPY files/mysql/appointments/appointments-client.sql /
+
+# examples
+COPY files/mysql/examples/test-clients.sql /
+
+# patient data manager
+COPY files/mysql/patient-data-manager/patient-data-manager-client.sql /
+
+# sandbox-manager
+COPY files/mysql/sandbox-manager/sandbox-manager-client.sql /
+
+# setup mysql and run scrips
+COPY files/img_scripts/config_mysql.sh /
+COPY files/mysql/install-complete-ioc.sql /
 RUN chmod 755 /config_mysql.sh
-RUN /config_mysql.sh
+RUN sh config_mysql.sh
 RUN rm config_mysql.sh
-ADD my.cnf /etc/mysql/my.cnf
+COPY files/mysql/my.cnf /etc/mysql/my.cnf
 RUN rm -f *.sql
 
 # Install TOMCAT
@@ -57,35 +84,36 @@ ENV TOMCAT_MAJOR_VERSION 8
 ENV TOMCAT_MINOR_VERSION 8.0.11
 ENV CATALINA_HOME /usr/local/tomcat
 
-RUN wget -q https://archive.apache.org/dist/tomcat/tomcat-${TOMCAT_MAJOR_VERSION}/v${TOMCAT_MINOR_VERSION}/bin/apache-tomcat-${TOMCAT_MINOR_VERSION}.tar.gz && \
-    wget -qO- https://archive.apache.org/dist/tomcat/tomcat-${TOMCAT_MAJOR_VERSION}/v${TOMCAT_MINOR_VERSION}/bin/apache-tomcat-${TOMCAT_MINOR_VERSION}.tar.gz.md5 | md5sum -c - && \
+RUN wget -q http://archive.apache.org/dist/tomcat/tomcat-${TOMCAT_MAJOR_VERSION}/v${TOMCAT_MINOR_VERSION}/bin/apache-tomcat-${TOMCAT_MINOR_VERSION}.tar.gz && \
+    wget -qO- http://archive.apache.org/dist/tomcat/tomcat-${TOMCAT_MAJOR_VERSION}/v${TOMCAT_MINOR_VERSION}/bin/apache-tomcat-${TOMCAT_MINOR_VERSION}.tar.gz.md5 | md5sum -c - && \
     tar zxf apache-tomcat-*.tar.gz && \
     rm apache-tomcat-*.tar.gz && \
     mv apache-tomcat* ${CATALINA_HOME}
 
-ADD tomcat-users.xml ${CATALINA_HOME}/conf/tomcat-users.xml
-ADD setenv.sh ${CATALINA_HOME}/bin/setenv.sh
+COPY files/tomcat/tomcat-users.xml ${CATALINA_HOME}/conf/tomcat-users.xml
+COPY files/tomcat/setenv.sh ${CATALINA_HOME}/bin/setenv.sh
 
-# Deploy hspc
-ADD hsp-reference-apps.war /hsp-reference-apps.war
-RUN unzip hsp-reference-apps.war -d ${CATALINA_HOME}/webapps/hsp-reference-apps
-RUN rm -f hsp-reference-apps.war
-ADD services.js ${CATALINA_HOME}/webapps/hsp-reference-apps/static/fhirStarter/services.js
+# Application deployments
 
-# Installing open (unsecured) instance of hspc reference implementation does not require hsp-auth
-#ADD hsp-auth.war /hsp-auth.war
-#RUN unzip hsp-auth.war -d ${CATALINA_HOME}/webapps/hsp-auth
-#ADD auth.properties ${CATALINA_HOME}/webapps/hsp-auth/WEB-INF/classes/config/auth.properties
-#RUN rm -f hsp-auth.war
+# reference authentication 
+ENV HSP_REFERENCE_AUTHORIZATION_VERSION 0.8
+COPY files/webapps/hspc-reference-authorization/hspc-reference-authorization.war /
+RUN unzip hspc-reference-authorization.war -d ${CATALINA_HOME}/webapps/hspc-reference-authorization
+RUN rm -f hspc-referencej-authorization.war
 
-ADD hsp-api.war /hsp-api.war
-RUN unzip hsp-api.war -d ${CATALINA_HOME}/webapps/hsp-api
-ADD fhir-service-database-config-mysql.xml ${CATALINA_HOME}/webapps/hsp-api/WEB-INF/fhir-service-database-config-mysql.xml
-ADD security-context.xml ${CATALINA_HOME}/webapps/hsp-api/WEB-INF/security-context.xml
-RUN rm -f hsp-api.war
+# reference api
+COPY files/webapps/hspc-reference-api/hspc-reference-api.war /
+RUN unzip hspc-reference-api.war -d ${CATALINA_HOME}/webapps/hspc-reference-api
+RUN rm -f hspc-reference-api.war
+COPY files/webapps/hspc-reference-api/application.yml.open ${CATALINA_HOME}/hspc-reference-api/WEB-INF/classes/application.yml	
 
-# Add image scripts
-ADD run.sh /usr/local/bin/run.sh
+# reference apps
+COPY files/webapps/hspc-reference-apps/hspc-reference-apps.war /
+RUN unzip hspc-reference-apps.war -d ${CATALINA_HOME}/webapps/hspc-reference-apps
+RUN rm -f hspc-reference-apps.war
+
+# Add run script
+COPY files/img_scripts/run.sh /usr/local/bin/run.sh
 RUN chmod +x /usr/local/bin/run.sh
 
 EXPOSE 8080

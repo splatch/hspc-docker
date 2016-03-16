@@ -16,13 +16,20 @@ mysql -uroot -pmysqlPassword -e "CREATE USER 'oic'@'localhost' IDENTIFIED BY 'oi
 mysql -uroot -pmysqlPassword -e "GRANT ALL PRIVILEGES ON oic.* TO 'oic'@'%'"
 mysql -uroot -pmysqlPassword -e "GRANT ALL PRIVILEGES ON oic.* TO 'oic'@'localhost'"
 mysql -uroot -pmysqlPassword -e "FLUSH PRIVILEGES"	
-mysql -uroot -pmysqlPassword -e "source mysql_auth_install.sql"
 
-mysql -uroot -pmysqlPassword -e "CREATE DATABASE fhir_ut"
-mysql -uroot -pmysqlPassword -e "CREATE USER 'fhir_ut'@'localhost' IDENTIFIED BY 'fhir_ut'"
-mysql -uroot -pmysqlPassword -e "GRANT ALL PRIVILEGES ON fhir_ut.* TO 'fhir_ut'@'%'"
-mysql -uroot -pmysqlPassword -e "GRANT ALL PRIVILEGES ON fhir_ut.* TO 'fhir_ut'@'localhost'"
+mysql -uroot -pmysqlPassword -e "CREATE DATABASE hapi_pu"
+mysql -uroot -pmysqlPassword -e "CREATE USER 'hapi_pu'@'localhost' IDENTIFIED BY 'hapi_pu'"
+mysql -uroot -pmysqlPassword -e "GRANT ALL PRIVILEGES ON hapi_pu.* TO 'hapi_pu'@'%'"
+mysql -uroot -pmysqlPassword -e "GRANT ALL PRIVILEGES ON hapi_pu.* TO 'hapi_pu'@'localhost'"
 mysql -uroot -pmysqlPassword -e "FLUSH PRIVILEGES"	
+
+mysql -uroot -pmysqlPassword -e "source install-complete-ioc.sql"
+
+#mysql -uroot -pmysqlPassword -e "CREATE DATABASE fhir_ut"
+#mysql -uroot -pmysqlPassword -e "CREATE USER 'fhir_ut'@'localhost' IDENTIFIED BY 'fhir_ut'"
+#mysql -uroot -pmysqlPassword -e "GRANT ALL PRIVILEGES ON fhir_ut.* TO 'fhir_ut'@'%'"
+#mysql -uroot -pmysqlPassword -e "GRANT ALL PRIVILEGES ON fhir_ut.* TO 'fhir_ut'@'localhost'"
+#mysql -uroot -pmysqlPassword -e "FLUSH PRIVILEGES"	
 
 #mysql -uroot -pmysqlPassword -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'localhost' IDENTIFIED BY 'root' WITH GRANT OPTION"
 killall mysqld
