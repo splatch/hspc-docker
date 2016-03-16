@@ -96,16 +96,16 @@ COPY files/tomcat/setenv.sh ${CATALINA_HOME}/bin/setenv.sh
 # Application deployments
 
 # reference authentication 
-ENV HSP_REFERENCE_AUTHORIZATION_VERSION 0.8
 COPY files/webapps/hspc-reference-authorization/hspc-reference-authorization.war /
 RUN unzip hspc-reference-authorization.war -d ${CATALINA_HOME}/webapps/hspc-reference-authorization
-RUN rm -f hspc-referencej-authorization.war
+RUN rm -f hspc-reference-authorization.war
+COPY files/webapps/hspc-reference-authorization/auth.properties ${CATALINA_HOME}/webapps/hspc-reference-authorization/WEB-INF/classes/config/auth.properties
 
 # reference api
 COPY files/webapps/hspc-reference-api/hspc-reference-api.war /
 RUN unzip hspc-reference-api.war -d ${CATALINA_HOME}/webapps/hspc-reference-api
 RUN rm -f hspc-reference-api.war
-COPY files/webapps/hspc-reference-api/application.yml.open ${CATALINA_HOME}/hspc-reference-api/WEB-INF/classes/application.yml	
+COPY files/webapps/hspc-reference-api/application.yml ${CATALINA_HOME}/webapps/hspc-reference-api/WEB-INF/classes/application.yml	
 
 # reference apps
 COPY files/webapps/hspc-reference-apps/hspc-reference-apps.war /

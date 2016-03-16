@@ -1,27 +1,16 @@
 
-In order to build this image, you must include the following files in the files folder:
+In order to build this image, you must include the following files:
 
-- hsp-api.war
-- hsp-auth.war
-- hsp-reference-apps.war
+files/webapps/hspc-reference-api/hspc-reference-api.war
+files/webapps/hspc-reference-apps/hspc-reference-apps.war
+files/webapps/hspc-reference-authorization/hspc-reference-authorization.war
 
-Build image :
-sudo docker build -t="opencds/hspc:ubuntu" .
-sudo docker build -t="hspc" .
+Build image:
+sudo docker build -t="opencds/hspc" .
 
-Create container :
-sudo docker run -d -p 8080:8080 -p 2222:22 --name hspc opencds/hspc:ubuntu
-
-Test instaltion:
-1.- Open a browser and go to: http://localhost:8080/hsp-reference-apps
-2.- Log in with "demo/demo"
-3.- Select a patient 
-4.- Select an application
-
-
-Find out the ipaddress of the container:
-sudo docker inspect hspc | grep IPAddress
+Create container:
+sudo docker run -d -p 8080:8080 --name hspc opencds/hspc
 
 References:
-https://healthservices.atlassian.net/wiki/display/HSPC/Download%2C+Build+and+Install+the+HSPC+Reference+Implementation
+https://healthservices.atlassian.net/wiki/display/HSPC/Platform+Developer's+Guide
 
