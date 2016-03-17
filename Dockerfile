@@ -116,6 +116,7 @@ COPY files/webapps/hspc-bilirubin-app/hspc-bilirubin-app.war /
 RUN unzip hspc-bilirubin-app.war -d ${CATALINA_HOME}/webapps/hspc-bilirubin-app
 RUN rm -f hspc-bilirubin-app.war
 COPY files/webapps/hspc-bilirubin-app/config.json ${CATALINA_HOME}/webapps/hspc-bilirubin-app/static/bilirubin-chart/config/config.json
+COPY files/webapps/hspc-bilirubin-app/controllers.js ${CATALINA_HOME}/webapps/hspc-bilirubin-app/static/bilirubin-chart/js/controllers.js
 
 # patient data manager
 COPY files/webapps/hspc-patient-data-manager/hspc-patient-data-manager.war /
