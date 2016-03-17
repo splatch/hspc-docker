@@ -107,6 +107,9 @@ COPY files/webapps/hspc-reference-api/application.yml ${CATALINA_HOME}/webapps/h
 COPY files/webapps/hspc-reference-apps/hspc-reference-apps.war /
 RUN unzip hspc-reference-apps.war -d ${CATALINA_HOME}/webapps/hspc-reference-apps
 RUN rm -f hspc-reference-apps.war
+COPY files/webapps/hspc-reference-apps/apps.json ${CATALINA_HOME}/webapps/hspc-reference-apps/static/fhirStarter/apps.json
+COPY files/webapps/hspc-reference-apps/services.js ${CATALINA_HOME}/webapps/hspc-reference-apps/static/fhirStarter/services.js
+COPY files/webapps/hspc-reference-apps/user-apps.json ${CATALINA_HOME}/webapps/hspc-reference-apps/static/fhirStarter/user-apps.json
 
 # bilirubin app
 COPY files/webapps/hspc-bilirubin-app/hspc-bilirubin-app.war /
