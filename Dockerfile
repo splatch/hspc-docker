@@ -91,7 +91,6 @@ COPY files/tomcat/tomcat-users.xml ${CATALINA_HOME}/conf/tomcat-users.xml
 COPY files/tomcat/setenv.sh ${CATALINA_HOME}/bin/setenv.sh
 
 # Application deployments
-
 # reference authentication 
 COPY files/webapps/hspc-reference-authorization/hspc-reference-authorization.war /
 RUN unzip hspc-reference-authorization.war -d ${CATALINA_HOME}/webapps/hspc-reference-authorization
@@ -108,6 +107,17 @@ COPY files/webapps/hspc-reference-api/application.yml ${CATALINA_HOME}/webapps/h
 COPY files/webapps/hspc-reference-apps/hspc-reference-apps.war /
 RUN unzip hspc-reference-apps.war -d ${CATALINA_HOME}/webapps/hspc-reference-apps
 RUN rm -f hspc-reference-apps.war
+
+# bilirubin app
+COPY files/webapps/hspc-bilirubin-app/hspc-bilirubin-app.war /
+RUN unzip hspc-bilirubin-app.war -d ${CATALINA_HOME}/webapps/hspc-bilirubin-app
+RUN rm -f hspc-bilirubin-app.war
+COPY files/webapps/hspc-bilirubin-app/config.json ${CATALINA_HOME}/webapps/hspc-bilirubin-app/static/bilirubin-chart/config/config.json
+
+# patient data manager
+COPY files/webapps/hspc-patient-data-manager/hspc-patient-data-manager.war /
+RUN unzip hspc-patient-data-manager.war -d ${CATALINA_HOME}/webapps/hspc-patient-data-manager
+RUN rm -f hspc-patient-data-manager.war
 
 # Add run script
 COPY files/img_scripts/run.sh /usr/local/bin/run.sh
