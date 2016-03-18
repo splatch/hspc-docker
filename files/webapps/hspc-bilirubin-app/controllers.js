@@ -156,7 +156,7 @@ angular.module('bilirubinApp.controllers', []).controller('bilirubinCtrl', ['$sc
         var scope = smart.tokenResponse.scope;
         //var scopes = scope.split(" ");
 	 var scopes = [];
-	if (scopes){
+	if (scope){
 		scopes = scope.split(" ");	
 	}
 
