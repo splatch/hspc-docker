@@ -5,6 +5,8 @@ files/webapps/hspc-reference-apps/hspc-reference-apps.war
 files/webapps/hspc-bilirubin-app/hspc-bilirubin-app.war
 files/webapps/hspc-patient-data-manager/hspc-patient-data-manager.war
 files/webapps/hspc-reference-authorization/hspc-reference-authorization.war
+files/webapps/growth-chart-app/growth-chart-app.war
+files/webapps/hspc-sandbox-manager/hspc-sandbox.manager.war
 
 Build image:
 sudo docker build -t="opencds/hspc" .

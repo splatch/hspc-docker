@@ -28,14 +28,15 @@ hspc:
         scopes: openid,launch,smart/orchestrate_launch
       fhir:
         db:
-          driver: com.mysql.jdbc.Driver
+          driver-class-name: com.mysql.jdbc.Driver
           url: jdbc:mysql://localhost:3306/hapi_pu?autoReconnect=true
           username: hapi_pu
           password: hapi_pu
-          persistenceUnitName: HAPI_PU
+          schema: hapi_pu
         hibernate:
           dialect: org.hibernate.dialect.MySQL5InnoDBDialect
         terminologyEndpointURL: fhir2.healthintersections.com.au/open
+        federatedEndpointURL: dataphoria.org/datafhir
     authorization:
       url: http://localhost:8080/hspc-reference-authorization
       authorizeUrl: ${hspc.platform.authorization.url}/authorize

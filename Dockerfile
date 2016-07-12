@@ -4,7 +4,7 @@ FROM ubuntu:14.04
 MAINTAINER Salvador Rodriguez <salvador.rodriguez@utah.edu>
 
 # Install packages
-ENV REFRESHED_AT 2016-03-15
+ENV REFRESHED_AT 2016-07-12
 RUN apt-get update && \
     apt-get install -yq --no-install-recommends mysql-server-5.6 wget unzip software-properties-common pwgen ca-certificates && \
     apt-get clean && \
@@ -111,6 +111,12 @@ COPY files/webapps/hspc-reference-apps/apps.json ${CATALINA_HOME}/webapps/hspc-r
 COPY files/webapps/hspc-reference-apps/services.js ${CATALINA_HOME}/webapps/hspc-reference-apps/static/fhirStarter/services.js
 COPY files/webapps/hspc-reference-apps/user-apps.json ${CATALINA_HOME}/webapps/hspc-reference-apps/static/fhirStarter/user-apps.json
 
+# sandbox-manager
+COPY files/webapps/hspc-sandbox-manager/hspc-sandbox-manager.war /
+RUN unzip hspc-sandbox-manager.war -d ${CATALINA_HOME}/webapps/hspc-sandbox-manager
+RUN rm -f hspc-sandbox-manager.war
+COPY files/webapps/hspc-sandbox-manager/application.yml ${CATALINA_HOME}/webapps/hspc-sandbox-manager/WEB-INF/classes/application.yml	
+
 # bilirubin app
 COPY files/webapps/hspc-bilirubin-app/hspc-bilirubin-app.war /
 RUN unzip hspc-bilirubin-app.war -d ${CATALINA_HOME}/webapps/hspc-bilirubin-app
@@ -123,11 +129,17 @@ COPY files/webapps/hspc-patient-data-manager/hspc-patient-data-manager.war /
 RUN unzip hspc-patient-data-manager.war -d ${CATALINA_HOME}/webapps/hspc-patient-data-manager
 RUN rm -f hspc-patient-data-manager.war
 
+# growth chart app
+COPY files/webapps/growth-chart-app/growth-chart-app.war /
+RUN unzip growth-chart-app.war -d ${CATALINA_HOME}/webapps/growth-chart-app
+RUN rm -f growth-chart-app.war
+
 # Add run script
 COPY files/img_scripts/run.sh /usr/local/bin/run.sh
 RUN chmod +x /usr/local/bin/run.sh
 
+VOLUME ["/etc/mysql", "/var/lib/mysql"]
+
 EXPOSE 8080
 
 CMD ["/usr/local/bin/run.sh"]
-

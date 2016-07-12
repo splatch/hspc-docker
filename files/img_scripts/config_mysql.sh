@@ -23,6 +23,12 @@ mysql -uroot -pmysqlPassword -e "GRANT ALL PRIVILEGES ON hapi_pu.* TO 'hapi_pu'@
 mysql -uroot -pmysqlPassword -e "GRANT ALL PRIVILEGES ON hapi_pu.* TO 'hapi_pu'@'localhost'"
 mysql -uroot -pmysqlPassword -e "FLUSH PRIVILEGES"	
 
+mysql -uroot -pmysqlPassword -e "CREATE DATABASE sandman"
+mysql -uroot -pmysqlPassword -e "CREATE USER 'sandman'@'localhost' IDENTIFIED BY 'sandman'"
+mysql -uroot -pmysqlPassword -e "GRANT ALL PRIVILEGES ON sandman.* TO 'sandman'@'%'"
+mysql -uroot -pmysqlPassword -e "GRANT ALL PRIVILEGES ON sandman.* TO 'sandman'@'localhost'"
+mysql -uroot -pmysqlPassword -e "FLUSH PRIVILEGES"	
+
 mysql -uroot -pmysqlPassword -e "source install-complete-ioc.sql"
 
 killall mysqld
