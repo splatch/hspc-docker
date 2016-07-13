@@ -11,8 +11,11 @@ files/webapps/hspc-sandbox-manager/hspc-sandbox.manager.war
 Build image:
 sudo docker build -t="opencds/hspc" .
 
+Create volume
+docker create -v /var/lib/mysql --name hspc-mysql-data opencds/hspc /bin/true
+
 Create container:
-sudo docker run -d -p 8080:8080 --name hspc opencds/hspc
+sudo docker run --volumes-from hspc-mysql-data -d -p 8080:8080 --name hspc opencds/hspc
 
 References:
 https://healthservices.atlassian.net/wiki/display/HSPC/Platform+Developer's+Guide
