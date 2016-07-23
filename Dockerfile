@@ -53,7 +53,7 @@ COPY files/mysql/reference-apps/clindat-client.sql /
 COPY files/mysql/reference-apps/meducation-client.sql /
 
 # bilirubin-chart
-COPY files/mysql/bilirubin-chart/bilirubin-chart-client.sql /
+COPY files/mysql/bilirubin-risk-chart/bilirubin-chart-client.sql /
 
 # appointments
 COPY files/mysql/appointments/appointments-client.sql /
@@ -117,12 +117,12 @@ RUN unzip hspc-sandbox-manager.war -d ${CATALINA_HOME}/webapps/hspc-sandbox-mana
 RUN rm -f hspc-sandbox-manager.war
 COPY files/webapps/hspc-sandbox-manager/application.yml ${CATALINA_HOME}/webapps/hspc-sandbox-manager/WEB-INF/classes/application.yml	
 
-# bilirubin app
-COPY files/webapps/hspc-bilirubin-app/hspc-bilirubin-app.war /
+# bilirubin-risk-chart
+COPY files/webapps/bilirubin-risk-app/hspc-bilirubin-app.war /
 RUN unzip hspc-bilirubin-app.war -d ${CATALINA_HOME}/webapps/hspc-bilirubin-app
 RUN rm -f hspc-bilirubin-app.war
-COPY files/webapps/hspc-bilirubin-app/config.json ${CATALINA_HOME}/webapps/hspc-bilirubin-app/static/bilirubin-chart/config/config.json
-COPY files/webapps/hspc-bilirubin-app/controllers.js ${CATALINA_HOME}/webapps/hspc-bilirubin-app/static/bilirubin-chart/js/controllers.js
+COPY files/webapps/bilirubin-risk-app/config.json ${CATALINA_HOME}/webapps/hspc-bilirubin-app/static/bilirubin-chart/config/config.json
+COPY files/webapps/bilirubin-risk-app/controllers.js ${CATALINA_HOME}/webapps/hspc-bilirubin-app/static/bilirubin-chart/js/controllers.js
 
 # patient data manager
 COPY files/webapps/hspc-patient-data-manager/hspc-patient-data-manager.war /
@@ -138,7 +138,7 @@ RUN rm -f growth-chart-app.war
 COPY files/img_scripts/run.sh /usr/local/bin/run.sh
 RUN chmod +x /usr/local/bin/run.sh
 
-VOLUME ["/etc/mysql", "/var/lib/mysql"]
+VOLUME ["/etc/mysql", "/var/lib/mysql", "/usr/local/tomcat/webapps"]
 
 EXPOSE 8080
 
