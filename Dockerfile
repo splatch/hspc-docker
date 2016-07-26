@@ -118,11 +118,11 @@ RUN rm -f hspc-sandbox-manager.war
 COPY files/webapps/hspc-sandbox-manager/application.yml ${CATALINA_HOME}/webapps/hspc-sandbox-manager/WEB-INF/classes/application.yml	
 
 # bilirubin-risk-chart
-COPY files/webapps/bilirubin-risk-app/hspc-bilirubin-app.war /
+COPY files/webapps/bilirubin-risk-chart/hspc-bilirubin-app.war /
 RUN unzip hspc-bilirubin-app.war -d ${CATALINA_HOME}/webapps/hspc-bilirubin-app
 RUN rm -f hspc-bilirubin-app.war
-COPY files/webapps/bilirubin-risk-app/config.json ${CATALINA_HOME}/webapps/hspc-bilirubin-app/static/bilirubin-chart/config/config.json
-COPY files/webapps/bilirubin-risk-app/controllers.js ${CATALINA_HOME}/webapps/hspc-bilirubin-app/static/bilirubin-chart/js/controllers.js
+COPY files/webapps/bilirubin-risk-chart/config.json ${CATALINA_HOME}/webapps/hspc-bilirubin-app/static/bilirubin-chart/config/config.json
+COPY files/webapps/bilirubin-risk-chart/controllers.js ${CATALINA_HOME}/webapps/hspc-bilirubin-app/static/bilirubin-chart/js/controllers.js
 
 # patient data manager
 COPY files/webapps/hspc-patient-data-manager/hspc-patient-data-manager.war /
