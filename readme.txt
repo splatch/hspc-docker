@@ -18,7 +18,7 @@ create volume for webapps
 sudo docker create -v /usr/local/tomcat/webapps --name hspc-webapps opencds/hspc /bin/true
 
 create container
-sudo docker run --volumes-from hspc-webapps --volumes-from hspc-mysql-data -d -p 8080:8080 --name hspc opencds/hspc
+sudo docker run --volumes-from hspc-webapps --volumes-from hspc-mysql-data --restart=always -d -p 8080:8080 --name hspc opencds/hspc
 
 References:
 https://healthservices.atlassian.net/wiki/display/HSPC/Platform+Developer's+Guide
